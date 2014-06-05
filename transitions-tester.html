@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>transitions tester</title>
+	<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+	<div class="page" id="tester">
+		
+	</div>
+	<button value="button">BUTTON</button>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+
+	<script type="text/javascript">
+		
+		$('button').on('click', function(){
+			$('#tester').toggleClass('transition');
+			$('#tester').css('margin-left', '500px');
+		});
+
+	</script>
+</body>
+</html>

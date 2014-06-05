@@ -1,0 +1,161 @@
+div#main { }
+
+.navbar { 
+	background-color: rgba(255,255,255,.75); 
+	height: 15%;
+	z-index: 4;
+}
+
+.navbar-header {
+	width: 32%;
+	margin: 0 34%;
+}
+
+.navbar-header a.navbar-brand h1{ 
+	display: inline-block;
+	color: #A3141B;
+	font-family: 'adobe caslon pro', serif;
+	font-style: italic;
+	font-size: 5em;
+}
+
+span#logo{
+	display: inline-block;
+	width: 300px;
+	height: 100px;
+	margin: 0 15px -5px 15px;
+	background-image: url('../fonts/halcyon_red_logo.png');
+}
+
+.container {
+	margin-top: 9%;
+}
+
+.years div.inner {
+	padding: 5px;
+}
+
+div.years a {
+	display: inline-block;
+	height: 18em;
+	width: 18em;
+	border: #FF530D 3px solid;
+	border-radius: 18em;
+	margin: 1px;
+	color: #A3141B;
+}
+
+div.years a:hover{
+	background-color: #C0B88B;
+	border: 3px #A3141B solid;
+	text-decoration: none;
+	color: #FF530D;
+}
+
+a:focus {
+	outline: 0;
+}
+
+div.years a h1 {
+
+	margin-top: 1em;
+	text-align: center;
+	font-size: 5em;
+}
+
+#tester{
+	width: 500px;
+	height: 500px;
+	border: 1px solid #00f;
+	-moz-transition: left 1s ease-in-out;
+	-webkit-transition: left 1s ease-in-out;
+	transition: left 1s ease-in-out;
+}
+
+/*div.page { z-index: 1; }
+*/
+
+div.page ul { padding-left: 0;}
+
+div.page li{
+	list-style: none;
+}
+
+div.page img { 
+	display: block;
+	-moz-transition: left 1s ease-in-out;
+	-webkit-transition: left 1s ease-in-out;
+	transition: left 1s ease-in-out;
+	
+	margin-left: auto;
+	margin-right: auto;
+}
+
+div.page img.with-form {
+	float: left;
+}
+
+button.page, .tag-button button {
+	position: fixed;
+	top: 3em;
+	left: 0em;
+	border: #C0B88B 3px solid;
+	font-size: 5em;
+	margin-bottom: 25px;
+	padding: .35em;
+	z-index: 999;
+}
+
+button.page.left { left: 5%;} 
+button.page.right { left: 90%;} 
+
+div.tag-button { z-index: 99;}
+
+.tag-button button{
+	top: 5%;
+	left: 75%;
+	font-size: 2.5em;
+	padding: .4em .4em .3em .4em;
+	border: #C0B88B 3px solid;
+	border-radius: 10em;
+}
+
+.tag-button button span{
+	padding-left: 5px;
+	padding-bottom: 3px;
+}
+
+form.tags.showing {
+	position: fixed;
+	top: 24%;
+	right: 18%;
+	width: 19%;
+	z-index: 99;
+}
+
+
+@media (max-width: 1370px) {
+	
+	.navbar-header a.navbar-brand h1{
+		width: 100%; 
+		font-size: 4em;
+		text-align: center;
+	}
+
+	.navbar { height: 25%; }
+
+	button.page {
+		font-size: 2em;
+	}
+
+	div.page-sidebar-1, div.page-sidebar-2{
+		display: block;
+		position: fixed;
+		top: 35%;
+		z-index: 99;
+	}
+
+	div.page-sidebar-1 { left: 5%; }
+
+	div.page-sidebar-2 { right: 5%;}
+}

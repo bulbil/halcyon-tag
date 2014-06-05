@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title>HALCYON TAG</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<!-- <link rel="stylesheet" href="css/bootstrap-theme.min.css"> -->
+	<link rel="stylesheet" href="css/jquery-ui-1.9.2.custom.css">
+	<link rel="stylesheet" href="css/jquery.tagit.css">
+	<link rel="stylesheet" href="css/style.css">
+ 
+	<script src="dist/js/lib/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+</head>
+<body>
+		<!--[if lt IE 7]>
+			<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+			<![endif]-->
+	<nav>
+		<div class="navbar navbar-fixed-top">
+			<div class="navbar-header"><a href="#" class="navbar-brand"><span id='logo'></span><h1>TAG !</h1></a></div>
+		</div>
+	</nav>
+	
+	<div class="container container-fluid">
+
+		<div class="row">
+			<div id="main" class="col-md-12 col-lg-12">
+			</div>
+		</div>
+
+	</div> <!-- /container -->        
+
+	<script type="text/template" id="index-template">
+		<div class="col-md-4 years">
+			<div class='inner'><a href="#/class/<%= year %>"><h1><%= year %></h1></a></div>
+		</div>
+	</script>
+	
+	<script type="text/template" id="button-left-template">
+		<div class="col-md-1 page-sidebar-1">
+			<div class="row">
+			<div class="col-md-1"><button class="btn btn-default btn-lg left page"><span class="glyphicon glyphicon-chevron-left left"></span></button></div>
+			</div>
+		</div>
+	</script>
+
+
+	<script type="text/template" id="page-template">
+
+		<div class='col-md-10 page'>
+		<ul>
+			<li><img src="http://triptych.brynmawr.edu/utils/getprintimage/collection/SC_Halcyon/id/<%= pageptr %>/scale/25/width/2605/height/3522" alt=""></li>
+ 		</ul>
+		<div class="col-md-1 tag-button"><button class="btn btn-default btn-lg tag"><span class="glyphicon glyphicon-plus"></span></button></div>
+		</div>
+		</div>
+
+	</script>
+
+	<script type="text/template" id="button-right-template">
+		<div class="col-md-1 page-sidebar-1">
+			<div class="row">
+			<div class="col-md-1"><button class="btn btn-default btn-lg page right"><span class="glyphicon glyphicon-chevron-right right"></span></button></div>
+			</div>
+		</div>
+	</script>
+
+	
+	<script type="text/template" id='form-template'>	
+			<div class="form-group">
+				<h3><%= pagetitle %></h3>					
+				<input class='form-control' type="hidden" name="pagetitle" value="<%= pagetitle %>">
+				<input class='form-control' type="hidden" name="pageptr" value="<%= pageptr %>">
+				<input class="form-control" id="tags-<%= id %>" name='tag'>
+				<input type="submit" class="btn btn-warning" value="submit">
+			</div>
+	</script>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+<!--	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script> -->
+	<script src="js/lib/jquery-1.11.1.min.js"></script>
+	<script src="js/lib/jquery-ui-1.10.4.custom.min.js"></script>
+	<script src="js/lib/tag-it.min.js"></script>
+<!--	<script src="js/lib/taggle.min.js"></script> -->
+<!--	<script src="js/lib/jquery.tagsinput.min.js"></script> -->
+	<script src="js/lib/bootstrap.min.js"></script>
+	<script src="js/lib/underscore-min.js"></script>
+	<script src="js/lib/backbone.js"></script>
+	<script src="pagetest.js"></script>
+	<script src="js/main.js"></script>
+
+</body>
+</html>
