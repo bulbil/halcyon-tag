@@ -15,7 +15,7 @@
 */
 
 function test(arg){
-	string = arg || 'fire';
+	string = arg;
 	console.log(string);
 }
 
@@ -46,7 +46,6 @@ HN.routes = Backbone.Router.extend({
 	index: function(){
 		test('index');
 		this.indexview.render();
-		if(this.volumeview) { test('yes'); }
 	},
 
 	// because page data is not changing and otherwise too many zombie listeners were created: a fetch success method
@@ -142,7 +141,7 @@ HN.formView = Backbone.View.extend({
 		$('#btn-tag-' + this.model.attributes.id).tooltip({
 			animation: true,
 			html: true,
-			title: "<h4>click to tag</h4>"
+			title: "<h4>click to add tags</h4>"
 		});
 		this.$el.hide();
 		return this;
@@ -179,14 +178,15 @@ HN.volumeView = Backbone.View.extend({
 		var dir = $(e.target).attr('class');
 		var max = $('.page ul').length - 1;
 		// counter logic
-		if (dir.contains('right')) { this.counter = (this.counter == max) ? 0 : this.counter + 1; } 
-		else if (dir.contains('left')) {  this.counter = (this.counter  === 0) ? max : this.counter - 1; }
+		if (dir.indexOf("right") > 0) { this.counter = (this.counter == max) ? 0 : this.counter + 1; } 
+		else if (dir.indexOf("left") > 0) {  this.counter = (this.counter  === 0) ? max : this.counter - 1; }
 		if(this.isShowing === true) { this.tagToggle() };
-		test(this.isShowing);
+		// test(this.counter);
 		this.show();
 	},
 	// quick function for showing and hiding the right page
 	show: function(){
+		test(this.counter);
 		$('div.page').hide();
 		$('div.page').removeClass('showing');
 		$($('div.page')[this.counter]).addClass('showing');
@@ -231,4 +231,9 @@ HN.volumeView = Backbone.View.extend({
 
 var readysetgo = new HN.routes();
 
-$(function() { Backbone.history.start(); });
+$(function() { 
+	$('.navbar-header span#about').hover(function(){
+		$('#info').toggle('slow', 'linear');
+	});
+	Backbone.history.start(); 
+});

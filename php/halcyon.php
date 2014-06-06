@@ -29,7 +29,6 @@ if($params){
 			unset($json_array['tag']);
 
 			foreach($tags as $tag){
-				$data_array = [];
 				$data_array = $json_array;
 				$data_array['tag'] = $tag;
 

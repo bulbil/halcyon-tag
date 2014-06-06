@@ -10,6 +10,28 @@ body{
 	z-index: 4;
 }
 
+.navbar-header span#about{
+	display: block;
+	position: fixed;
+	top: 15px;
+	left: 15px;
+	font-size: 5em;
+	opacity: .8;
+	cursor: pointer;
+}
+
+#info{
+	position: fixed;
+	top: 7em;
+	left: 15px;
+	font-size: 2em;
+	opacity: .9;
+	margin: 0 3%;
+	background-color: #fff;
+	border-bottom: 2px solid #a9b2b1;
+	z-index: 99;
+}
+
 /*Kate's - og from bootstrap.min.css*/
 .navbar-header{
 	display: block;
@@ -19,7 +41,7 @@ body{
 }
 
 .navbar-header a {
-	letter-spacing: .5em; 
+	letter-spacing: .3em; 
 	display: inline-block; 
 	color: #ab2323; 
 	font-size: 5em;
@@ -34,6 +56,15 @@ body{
 
 .navbar-header a h1 {
 	text-align: center;
+	font-size: .75em;
+}
+
+.navbar-header span#beta{
+	letter-spacing: 0;
+	font-size: .75em;
+	color: #c9b2b1;
+	font-style: italic;
+	opacity: :;
 }
 
 .container {
