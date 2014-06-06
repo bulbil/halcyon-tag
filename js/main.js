@@ -40,7 +40,9 @@ HN.routes = Backbone.Router.extend({
 	// initialize the indexview
 	initialize: function(){
 		test('init');
-		this.indexview = new HN.indexView({ model: new HN.years(HN.yearsList) });
+		this.indexview = new HN.indexView( {model: new HN.years} );
+		this.volume = new HN.volume();
+		this.volumeview = new HN.volumeView({ collection: this.volume });
 	},
 	// render the index
 	index: function(){
@@ -50,18 +52,20 @@ HN.routes = Backbone.Router.extend({
 
 	// because page data is not changing and otherwise too many zombie listeners were created: a fetch success method
 	getclass: function(year){
-		this.volumeview = new HN.volumeView({ collection: new HN.volume() });
+		this.volume.reset();
 		var volumeview = this.volumeview;
-		this.volumeview.collection.fetch({
+		this.volume.fetch({
 			data: { year: year },
 			processData: true,
-			success: function() { volumeview.render();},
+			success: function() { 
+				test('fetched!');
+				volumeview.render();},
 			error: function(a,b,c) { test(b); }
 		});
 	}
 });
 
-HN.years = Backbone.Model.extend({});
+HN.years = Backbone.Model.extend({  defaults: { years: [ 1964, 1969, 1974, 1979, 1984, 1989, 1994, 1999, 2004, 2009 ]} });
 
 HN.page = Backbone.Model.extend({});
 
@@ -91,7 +95,7 @@ HN.indexView = Backbone.View.extend({
 		var el = this.$el;
 		var template = this.template;
 		el.empty();
-		_.each( this.model.attributes, function(d){
+		_.each( this.model.attributes.years, function(d){
 			el.append(template({'year': d }));
 		});
 		return this;
@@ -204,7 +208,7 @@ HN.volumeView = Backbone.View.extend({
 	},	
 	// doesn't really do anything -- I like the idea of binding to reset, like on fetch, but doesn't seem to happen
 	initialize: function(){
-		this.listenTo(this.collection, 'reset', this.render);
+		this.listenTo(this.collection, 'change', this.render);
 
 	},
 	render: function(){

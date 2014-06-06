@@ -21,14 +21,14 @@ function sql_do(/*db,  query [[, arg ... ]] */) {
 
 function csv_to_sql($db, $filepath, $year){
 
-	$pages_columns_array = array(
-		'pageptr',
-		'pagetitle',
-		'pagefile',
-		'show',
-		'year',
-		'collection'
-	);
+	// $pages_columns_array = array(
+	// 	'pageptr',
+	// 	'pagetitle',
+	// 	'pagefile',
+	// 	'show',
+	// 	'year',
+	// 	'collection'
+	// );
 
 	$f = fopen($filepath, 'r');
 
@@ -44,7 +44,8 @@ function csv_to_sql($db, $filepath, $year){
 		print_r($data_array);
 		br();
 
-		$columns = implode(",", $pages_columns_array);
+		$columns_array = array_keys($data_array);
+		$columns = implode(",", $columns_array);
 		$values = array_values($data_array);
 
 		$p = '?';
