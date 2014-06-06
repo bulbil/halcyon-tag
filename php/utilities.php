@@ -2,7 +2,24 @@
 
 function br() { echo '<br /><br />'; }
 
-function csv_to_sql($db, $filepath){
+function sql_do(/*db,  query [[, arg ... ]] */) {
+	$args = func_get_args();
+	if(count($args) < 2) { throw new PDOexception('sql do - missing query'); }
+	$db = 	array_shift($args);
+	
+	if(count($args) == 1) {
+
+		$stmt = $db->query(array_shift($args));
+		return $stmt;		
+	} else {
+		$stmt = $db->prepare(array_shift($args));
+		$vals_array = $args[0];
+		$stmt->execute($vals_array);
+		return $stmt->rowCount();
+	}
+}
+
+function csv_to_sql($db, $filepath, $year){
 
 	$pages_columns_array = array(
 		'pageptr',
@@ -21,38 +38,35 @@ function csv_to_sql($db, $filepath){
 			$data[2]=>$data[3],
 			$data[4]=>$data[5],
 			$data[6]=>$data[7],
-			"year"=>1964,
+			"year"=>$year,
 			"collection"=> "SC_Halcyon"
 		);
 		print_r($data_array);
 		br();
 
-		$columns = implode(",", $columns_array);
-		$query = "INSERT INTO pages($columns) VALUES (?,?,?,?,?,?)";
+		$columns = implode(",", $pages_columns_array);
+		$values = array_values($data_array);
+
+		$p = '?';
+		for($i = 0; $i < count($values) - 1; $i++){ $p .= ',?'; }
+
+		$query = "INSERT INTO pages($columns) VALUES($p)";
 		
-		sql_do($db,$query,$data_array);
+		sql_do($db,$query,$values);
 	}
 }
 
-function sql_do(/*db,  query [[, arg ... ]] */) {
-	
-	$args = func_get_args();
-	if(count($args) < 2) { throw new PDOexception('sql do - missing query'); }
-	
-	$db = 	array_shift($args);
-	
-	if(count($args) == 1) {
+function sql_insert_values($db, $table, $associative_array){
 
-		$stmt = $db->query(array_shift($args));
-		return $stmt;		
-	} else {
-		$stmt = $db->prepare(array_shift($args));
-		$vals_array = array_values($args[0]);
-		$f = fopen('log.txt','a');
-		fwrite($f, print_r($vals_array,true));
-		$stmt->execute($vals_array);
-		return $stmt->rowCount();
-	}
+	$columns = array_keys($associative_array);
+	$columns = implode(',',$columns);
+	$values = array_values($associative_array);
+
+	$p = "?";
+	for($i = 0; $i < (count($values) - 1); $i++) {  $p .= ",?"; }
+
+	$query = "INSERT INTO $table($columns) VALUES($p)";
+	sql_do($db, $query, $values);
 }
 
 function json_dump($db,$table, $year) {
@@ -100,15 +114,14 @@ function add_pointers( $db, $pointers ) {
 	foreach($pointers as $ptr) sql_do($dbh, $query1, 'SC_Halcyon', $ptr);
 }
 
+function db_reset($db, $table, $q = "DELETE") {
+
+	$query= ($q == "DELETE") ? "$q FROM $table" : "$q TABLE $table";
+	sql_do($db, $query);
+}
+
 function db_setup($dbh){
 	try {
-		// $dbh = new PDO('sqlite:' . 'data/halcyon_tag.db');
-		// $query1 = "insert into tags ('collection', pointer) values (?,?)";
-		$query1= "DROP TABLE TAGS";
-		$query2= "DROP TABLE PAGES";
-
-		$query3= "DELETE FROM TAGS";
-		$query3= "DELETE FROM PAGES";
 		
 		$query4= "CREATE TABLE pages (
 			id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
@@ -131,7 +144,6 @@ function db_setup($dbh){
 			timestamp TEXT DEFAULT CURRENT_TIMESTAMP NOT NULL
 			)";
 
-		sql_do($dbh, $query1);
 		sql_do($dbh, $query4);
 		sql_do($dbh, $query5);
 

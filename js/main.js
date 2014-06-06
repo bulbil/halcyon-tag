@@ -19,6 +19,7 @@ function test(arg){
 	console.log(string);
 }
 
+Backbone.emulateHTTP = true;
 // setup app namespace
 var HN = {
 	registry: []
@@ -45,11 +46,11 @@ HN.routes = Backbone.Router.extend({
 	index: function(){
 		test('index');
 		this.indexview.render();
+		if(this.volumeview) { test('yes'); }
 	},
 
 	// because page data is not changing and otherwise too many zombie listeners were created: a fetch success method
 	getclass: function(year){
-
 		this.volumeview = new HN.volumeView({ collection: new HN.volume() });
 		var volumeview = this.volumeview;
 		this.volumeview.collection.fetch({
@@ -68,7 +69,7 @@ HN.page = Backbone.Model.extend({});
 // for saving the model, if I ever get to that!
 HN.form = Backbone.Model.extend({
 
-	url: 'http://localhost:8888/halcyon-tag/php/halcyon.php?save=1',
+	url: 'php/halcyon.php?save=1',
 	defaults: { tag: '' }
 });
 
@@ -100,7 +101,7 @@ HN.indexView = Backbone.View.extend({
 
 HN.pageView = Backbone.View.extend({
 
-	tagName:'ul',
+	className: 'page',
 	template: _.template($('#page-template').html()),
 	events: {
 
@@ -138,14 +139,19 @@ HN.formView = Backbone.View.extend({
 			placeholderText: 'enter a name',
 			afterTagAdded: function(d){ that.input(d) }
 			});
+		$('#btn-tag-' + this.model.attributes.id).tooltip({
+			animation: true,
+			html: true,
+			title: "<h4>click to tag</h4>"
+		});
 		this.$el.hide();
 		return this;
 	},
 	saveform: function(e){
 		e.preventDefault();
 		test('submit');
-		test(this.model);
 		this.model.save();
+		this.parentView.tagToggle();
 	},
 	input: function(e){
 
@@ -161,7 +167,7 @@ HN.formView = Backbone.View.extend({
 HN.volumeView = Backbone.View.extend({
 	el: '#main',
 	counter: 0,
-	isShowing: true,
+	isShowing: false,
 	template: _.template($('#page-template').html()),
 	events: {
 		'click button.left' : 'count',
@@ -175,24 +181,26 @@ HN.volumeView = Backbone.View.extend({
 		// counter logic
 		if (dir.contains('right')) { this.counter = (this.counter == max) ? 0 : this.counter + 1; } 
 		else if (dir.contains('left')) {  this.counter = (this.counter  === 0) ? max : this.counter - 1; }
+		if(this.isShowing === true) { this.tagToggle() };
+		test(this.isShowing);
 		this.show();
 	},
 	// quick function for showing and hiding the right page
 	show: function(){
 		$('div.page').hide();
-		$($('div.page')[this.counter]).show();
-		$('form').hide();
+		$('div.page').removeClass('showing');
+		$($('div.page')[this.counter]).addClass('showing');
+		$($('div.page')[this.counter]).fadeIn().show();
+		$('form').fadeOut().hide();
 	},
 	tagToggle: function(){
-
-		test(this.counter);
+		this.isShowing = !this.isShowing;
 		var currentform = $($('form')[this.counter]);
-
-		currentform.toggle(this.isShowing);
+		test('toggle');
+		(this.isShowing === true) ? currentform.fadeIn().show() : currentform.fadeOut().hide();
 		(this.isShowing === true) ? currentform.addClass('showing') : currentform.removeClass('showing');
 		(this.isShowing === true) ? $($('.page img')[this.counter]).addClass('with-form') : $($('.page img')[this.counter]).removeClass('with-form');
 		
-		this.isShowing = !this.isShowing;
 	},	
 	// doesn't really do anything -- I like the idea of binding to reset, like on fetch, but doesn't seem to happen
 	initialize: function(){

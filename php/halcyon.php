@@ -2,8 +2,8 @@
 
 include('utilities.php');
 
-$params = $_GET;
 
+$params = $_GET;
 $dbh = new PDO('sqlite:' . '../data/halcyon_tag.db');
 
 if($params){
@@ -19,35 +19,47 @@ if($params){
 		case('save'):
 
 			$input = file_get_contents('php://input');
-			$input = json_decode($input);
-			unset($input)['id'];
+			$json_array = json_decode($input, true);
 
-			$columns_array = array_keys($input);
-			$columns = implode(',', $columns);
+			$columns_array = array_keys($json_array);
+			$columns = implode(',', $columns_array);
 
-			$tags = explode(',', $input['tag']);
-			fwrite($f, print_r($tags, true));
+			$tags = explode(',', $json_array['tag']);
+			unset($json_array['id']);
+			unset($json_array['tag']);
 
 			foreach($tags as $tag){
-				$data_array = $input;
+				$data_array = [];
+				$data_array = $json_array;
 				$data_array['tag'] = $tag;
 
-				$query = "INSERT INTO tags($columns) VALUES (?,?,?,?,?)";
-				fwrite($f, $query);
-				fwrite($f, print_r($data_array, true));
+				sql_insert_values($dbh, 'tags', $data_array);
 			}
-			$input = print_r($input,true);
 			fclose($f);
-
-			// sql_do($dbh, $query, $input);
 			break;
-
-		case('db_setup'):
 
 		case('csv'):
 			$filepath = '../csv/' . $params[$first_key] . '_pages_mod.csv';
 			echo($filepath);
-			csv_to_sql($dbh, $filepath);
+			csv_to_sql($dbh, $filepath, $params[$first_key]);
+			break;
+		case('testsave'):
+			echo 'T E S T S A V E';
+			br();
+			$query = 'SELECT * FROM tags';
+			$results = sql_do($dbh,$query);
+			foreach($results as $row) {
+				$json[] = $row;
+			}
+			if(isset($json)){echo json_encode($json);}
+			break;
+
+		case('db_setup'):
+			db_setup($db);
+			break;
+
+		case('db_reset'):
+			db_reset($dbh,$params[$first_key]);
 			break;
 	}
 }

@@ -1,5 +1,10 @@
 <?php
 
+$a = array(1,2,3);
+$p = '?';
+for($i = 0; $i < count($a) - 1; $i++){ $p .= ',?'; }
+echo $p;
+
 $json = '[
       {
         "pagetitle": "Front Cover",
@@ -243,4 +248,4 @@ $json = '[
       }
 ]';
 
-echo $json;
+// echo $json;
